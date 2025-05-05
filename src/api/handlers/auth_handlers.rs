@@ -17,6 +17,11 @@ use crate::{
 };
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct AdminToken {
+    username: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct LoginUser {
     username: String,
     password_hash: String,
@@ -44,6 +49,25 @@ pub async fn login_handler(
     }
 
     tracing::error!("access denied: {:#?}", login);
+    Err(AuthError::WrongCredentials)?
+}
+
+pub async fn generate_token(
+    api_version: APIVersion,
+    State(state): State<SharedState>,
+    Json(admin): Json<AdminToken>,
+) -> Result<impl IntoResponse, APIError> {
+    tracing::trace!("api version: {}", api_version);
+    if let Ok(user) = user_repo::get_by_username(&admin.username, &state).await {
+        if user.is_admin() {
+            tracing::trace!("access granted, user: {}", user.id);
+            let tokens = auth::generate_tokens(user, &state.config);
+            let response = tokens_to_response(tokens);
+            return Ok(response);
+        }
+    }
+
+    tracing::error!("access denied: {:#?}", admin);
     Err(AuthError::WrongCredentials)?
 }
 

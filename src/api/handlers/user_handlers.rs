@@ -69,6 +69,29 @@ pub async fn get_user_handler(
     Ok(Json(user))
 }
 
+pub async fn get_user_handler_username(
+    access_claims: AccessClaims,
+    Path((version, username)): Path<(String, String)>,
+    State(state): State<SharedState>,
+) -> Result<Json<User>, APIError> {
+    let api_version: APIVersion = version::parse_version(&version)?;
+    tracing::trace!("api version: {}", api_version);
+    tracing::trace!("authentication details: {:#?}", access_claims);
+    tracing::trace!("username: {}", username);
+    access_claims.validate_role_admin()?;
+    let user = user_repo::get_by_username(&username, &state)
+        .await
+        .map_err(|e| match e {
+            sqlx::Error::RowNotFound => {
+                let user_error = UserError::UserNameNotFound(username);
+                (user_error.status_code(), APIErrorEntry::from(user_error)).into()
+            }
+            _ => APIError::from(e),
+        })?;
+
+    Ok(Json(user))
+}
+
 pub async fn update_user_handler(
     access_claims: AccessClaims,
     Path((version, id)): Path<(String, Uuid)>,
@@ -105,12 +128,15 @@ pub async fn delete_user_handler(
 enum UserError {
     #[error("user not found: {0}")]
     UserNotFound(Uuid),
+    #[error("user not found: {0}")]
+    UserNameNotFound(String),
 }
 
 impl UserError {
     const fn status_code(&self) -> StatusCode {
         match self {
             Self::UserNotFound(_) => StatusCode::NOT_FOUND,
+            Self::UserNameNotFound(_) => StatusCode::NOT_FOUND,
         }
     }
 }
@@ -128,6 +154,16 @@ impl From<UserError> for APIErrorEntry {
                 .instance(&format!("/api/v1/users/{}", user_id))
                 .trace_id()
                 .help(&format!("please check if the user ID is correct or refer to our documentation at {}#errors for more information", API_DOCUMENT_URL))
+                .doc_url(),
+            UserError::UserNameNotFound(username) => Self::new(&message)
+                .code(APIErrorCode::UserNotFound)
+                .kind(APIErrorKind::ResourceNotFound)
+                .description(&format!("user with the username '{}' does not exist in our records", username))
+                .detail(serde_json::json!({"username": username}))
+                .reason("must be an existing user")
+                .instance(&format!("/api/v1/users/username/{}", username))
+                .trace_id()
+                .help(&format!("please check if the username is correct or refer to our documentation at {}#errors for more information", API_DOCUMENT_URL))
                 .doc_url()
         }
     }

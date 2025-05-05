@@ -32,19 +32,7 @@ pub async fn start(state: SharedState) {
     // Build a CORS layer.
     // see https://docs.rs/tower-http/latest/tower_http/cors/index.html
     // for more details
-    let cors_layer = CorsLayer::new().allow_origin(Any);
-    // let cors_header_value = config.service_http_addr().parse::<HeaderValue>().unwrap();
-    // let cors_layer = CorsLayer::new()
-    //      .allow_origin(cors_header_value)
-    //      .allow_methods([
-    //          Method::HEAD,
-    //          Method::GET,
-    //          Method::POST,
-    //          Method::PATCH,
-    //          Method::DELETE,
-    //      ])
-    //      .allow_credentials(true)
-    //      .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
+    let cors_layer = CorsLayer::new().allow_origin(Any).allow_headers(Any);
 
     // Build the router.
     let router = Router::new()

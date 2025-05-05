@@ -145,6 +145,18 @@
 
 ---
 
+## Get User by ID
+
+**Endpoint:** `GET /v1/users/username/{username}`
+
+**Description:** Retrieves a user by username.
+
+**Headers:**
+
+- `Authorization: Bearer <access_token>`
+
+---
+
 ## Add a New User
 
 **Endpoint:** `POST /v1/users`

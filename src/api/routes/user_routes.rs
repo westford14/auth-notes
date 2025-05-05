@@ -5,8 +5,8 @@ use axum::{
 
 use crate::{
     api::handlers::user_handlers::{
-        add_user_handler, delete_user_handler, get_user_handler, list_users_handler,
-        update_user_handler,
+        add_user_handler, delete_user_handler, get_user_handler, get_user_handler_username,
+        list_users_handler, update_user_handler,
     },
     application::state::SharedState,
 };
@@ -18,4 +18,5 @@ pub fn routes() -> Router<SharedState> {
         .route("/{id}", get(get_user_handler))
         .route("/{id}", put(update_user_handler))
         .route("/{id}", delete(delete_user_handler))
+        .route("/username/{username}", get(get_user_handler_username))
 }
