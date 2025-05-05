@@ -24,9 +24,9 @@ INSERT INTO users (
 VALUES (
         'admin',
         'admin@admin.com',
-        -- password: pswd1234, hash(pswd1234pjZKk6A8YtC8$9p&UIp62bv4PLwD7@dF)
-        '7c44575b741f02d49c3e988ba7aa95a8fb6d90c0ef63a97236fa54bfcfbd9d51',
-        'pjZKk6A8YtC8$9p&UIp62bv4PLwD7@dF',
+        -- password: myPassword, hash(pswd1234pjZKk6A8YtC8$9p&UIp62bv4PLwD7@dF)
+        '$2b$10$/4ROWmG8t2es761Z.ViF1ODWu50dJLN3OXMoxNE.XlF0nitkbQKaq',
+        '$2b$10$/4ROWmG8t2es761Z.ViF1O',
         'true',
         'admin',
         now(),
