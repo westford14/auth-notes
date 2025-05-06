@@ -145,7 +145,7 @@
 
 ---
 
-## Get User by ID
+## Get User by Username
 
 **Endpoint:** `GET /v1/users/username/{username}`
 
@@ -219,6 +219,88 @@
 
 ---
 
+## List Notes
+
+**Endpoint:** `GET /v1/notes`
+
+**Description:** Lists all notes.
+
+**Headers:**
+
+- `Authorization: Bearer <access_token>`
+
+---
+
+## Get Note by ID
+
+**Endpoint:** `GET /v1/notes/{note_id}`
+
+**Description:** Retrieves a user by ID.
+
+**Headers:**
+
+- `Authorization: Bearer <access_token>`
+
+---
+
+## Add a New Note
+
+**Endpoint:** `POST /v1/notes`
+
+**Description:** Adds a new note.
+
+**Headers:**
+
+- `Content-Type: application/json; charset=utf8`
+- `Authorization: Bearer <access_token>`
+
+**Request Body:**
+
+```json
+{
+    "id": "917646a0-7437-48a0-bb03-a7aa830f8f81",
+    "user_id": "f662f67b-e817-4b47-ba89-ed27206a61cc",
+    "text": "this is a test note"
+}
+```
+
+---
+
+## Update Note
+
+**Endpoint:** `PUT /v1/notes/{note_id}`
+
+**Description:** Updates a note.
+
+**Headers:**
+
+- `Content-Type: application/json; charset=utf8`
+- `Authorization: Bearer <access_token>`
+
+**Request Body:**
+
+```json
+{
+    "id": "917646a0-7437-48a0-bb03-a7aa830f8f81",
+    "user_id": "f662f67b-e817-4b47-ba89-ed27206a61cc",
+    "text": "this is a test note -- that has been updated"
+}
+```
+
+---
+
+## Delete Note
+
+**Endpoint:** `DELETE /v1/notes/{note_id}`
+
+**Description:** Deletes a note.
+
+**Headers:**
+
+- `Authorization: Bearer <access_token>`
+
+---
+
 ## Errors
 
 ### The possible error codes and description
@@ -259,8 +341,8 @@
          "instance": "/api/v1/users/12345",
          "trace_id": "3d2b4f2d00694354a00522fe3bb86158",
          "timestamp": "2024-01-19T16:58:34.123+0000",
-         "help": "please check if the user ID is correct or refer to our documentation at https://github.com/sheroz/axum-rest-api-sample/blob/main/docs/api-docs.md#errors for more information",
-         "doc_url": "https://github.com/sheroz/axum-rest-api-sample/blob/main/docs/api-docs.md"
+         "help": "please check if the user ID is correct or refer to our documentation",
+         "doc_url": "https://github.com/westford14/auth-notes/blob/main/docs/api-docs.md"
      }
    ]
  }

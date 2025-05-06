@@ -23,7 +23,7 @@ use tower_http::cors::{Any, CorsLayer};
 use crate::{
     api::{
         error::APIError,
-        routes::{auth_routes, user_routes},
+        routes::{auth_routes, note_routes, user_routes},
     },
     application::{security::jwt::AccessClaims, state::SharedState},
 };
@@ -32,7 +32,10 @@ pub async fn start(state: SharedState) {
     // Build a CORS layer.
     // see https://docs.rs/tower-http/latest/tower_http/cors/index.html
     // for more details
-    let cors_layer = CorsLayer::new().allow_origin(Any).allow_headers(Any);
+    let cors_layer = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_headers(Any)
+        .allow_methods(Any);
 
     // Build the router.
     let router = Router::new()
@@ -45,6 +48,8 @@ pub async fn start(state: SharedState) {
         .nest("/{version}/auth", auth_routes::routes())
         // Nesting user routes.
         .nest("/{version}/users", user_routes::routes())
+        // Nesting note routes.
+        .nest("/{version}/notes", note_routes::routes())
         // Add a fallback service for handling routes to unknown paths.
         .fallback(error_404_handler)
         .with_state(Arc::clone(&state))
