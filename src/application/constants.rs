@@ -1,7 +1,6 @@
 // Roles.
 pub const USER_ROLE_ADMIN: &str = "admin";
-pub const USER_ROLE_CUSTOMER: &str = "customer";
-pub const USER_ROLE_GUEST: &str = "guest";
+pub const USER_ROLE_USER: &str = "user";
 
 // JWT related constants.
 pub const JWT_REDIS_REVOKE_GLOBAL_BEFORE_KEY: &str = "jwt.revoke.global.before";
