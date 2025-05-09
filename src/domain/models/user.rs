@@ -22,3 +22,8 @@ impl User {
         security::roles::contains_role_admin(&self.roles)
     }
 }
+
+#[derive(Debug, FromRow, Serialize, Deserialize, PartialEq, Eq, Clone)]
+pub struct SimpleUser {
+    pub id: Uuid,
+}
