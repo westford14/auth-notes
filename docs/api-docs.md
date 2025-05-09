@@ -221,7 +221,7 @@
 
 ## List Notes
 
-**Endpoint:** `GET /v1/notes`
+**Endpoint:** `GET /v1/notes/`
 
 **Description:** Lists all notes.
 
@@ -231,11 +231,32 @@
 
 ---
 
+## List Notes for User ID
+
+**Endpoint:** `POST /v1/notes/`
+
+**Description:** Lists all notes.
+
+**Headers:**
+
+- `Content-Type: application/json; charset=utf8`
+- `Authorization: Bearer <access_token>`
+
+**Request Body:**
+
+```json
+{
+    "id": "f662f67b-e817-4b47-ba89-ed27206a61cc",
+}
+```
+
+---
+
 ## Get Note by ID
 
 **Endpoint:** `GET /v1/notes/{note_id}`
 
-**Description:** Retrieves a user by ID.
+**Description:** Retrieves a note by ID.
 
 **Headers:**
 

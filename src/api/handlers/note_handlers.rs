@@ -20,6 +20,7 @@ use crate::{
         state::SharedState,
     },
     domain::models::note::Note,
+    domain::models::user::SimpleUser,
 };
 
 pub async fn list_notes_handler(
@@ -31,6 +32,19 @@ pub async fn list_notes_handler(
     tracing::trace!("authentication details: {:#?}", access_claims);
     access_claims.validate_role_admin()?;
     let notes = note_repo::list(&state).await?;
+    Ok(Json(notes))
+}
+
+pub async fn list_notes_by_user_handler(
+    api_version: APIVersion,
+    access_claims: AccessClaims,
+    State(state): State<SharedState>,
+    Json(user): Json<SimpleUser>,
+) -> Result<Json<Vec<Note>>, APIError> {
+    tracing::trace!("api version: {}", api_version);
+    tracing::trace!("authentication details: {:#?}", access_claims);
+    access_claims.validate_role_admin()?;
+    let notes = note_repo::list_by_user(user.id, &state).await?;
     Ok(Json(notes))
 }
 

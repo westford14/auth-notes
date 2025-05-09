@@ -14,3 +14,4 @@ target/
 
 axum-api.session.sql
 .DS_Store
+.env_render

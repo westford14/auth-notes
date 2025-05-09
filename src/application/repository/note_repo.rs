@@ -15,6 +15,15 @@ pub async fn list(state: &SharedState) -> RepositoryResult<Vec<Note>> {
     Ok(users)
 }
 
+pub async fn list_by_user(user_id: Uuid, state: &SharedState) -> RepositoryResult<Vec<Note>> {
+    let users = query_as::<_, Note>("SELECT * FROM notes WHERE user_id = $1")
+        .bind(user_id)
+        .fetch_all(&state.db_pool)
+        .await?;
+
+    Ok(users)
+}
+
 pub async fn get_by_id(id: Uuid, state: &SharedState) -> RepositoryResult<Note> {
     let user = sqlx::query_as::<_, Note>("SELECT * FROM notes WHERE id = $1")
         .bind(id)
