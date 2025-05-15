@@ -97,7 +97,6 @@ pub async fn update_note_handler(
     tracing::trace!("api version: {}", api_version);
     tracing::trace!("authentication details: {:#?}", access_claims);
     tracing::trace!("id: {}", id);
-    access_claims.validate_role_admin()?;
     let note = note_repo::update(note, &state).await?;
     Ok(Json(note))
 }

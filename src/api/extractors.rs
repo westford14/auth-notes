@@ -52,6 +52,7 @@ where
     T: for<'de> serde::Deserialize<'de> + std::fmt::Debug + ClaimsMethods + Sync + Send,
 {
     // Extract the token from the authorization header.
+    println!("{:?}", parts);
     let TypedHeader(Authorization(bearer)) = parts
         .extract::<TypedHeader<Authorization<Bearer>>>()
         .await
